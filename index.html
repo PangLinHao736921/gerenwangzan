@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style type="text/css">
+		*{
+			margin: 0;
+			padding: 0;
+		}
+		.bg{
+			border-radius: 50%;
+			position: absolute;
+		}
+		#sz{
+			width: 200px;
+			height: 200px;
+			border: 1px solid black;
+			position: fixed;
+			top: 0;
+			left: 0;
+			z-index: 5;
+			background-color: white;
+		}
+		ul{
+			height: 54px;
+		}
+		ul li{
+			width: 30px;
+			height: 15px;
+			list-style: none;
+			float: left;
+			margin: 5px 5px;
+			border: 1px solid black;
+		}
+		span{
+			border: 1px solid black;
+			margin: 0 5px;
+			cursor: pointer;
+		}
+		input{
+			width: 120px;
+		}
+		#ysk{
+			width: 35px;
+			height: 35px;
+			position: absolute;
+			right: 20px;
+			bottom: 40px;
+			border: 1px solid black;
+		}
+		#box{
+			overflow: hidden;
+			position: relative;
+		}
+	</style>
+</head>
+<body>
+	<div id="sz">
+		宽：<input type="text" value="30" id="kuan"><br>
+		高：<input type="text" value="30" id="gao"><br>
+		颜色：
+		<span id="sj">随机颜色</span>
+		<ul id="ysz">
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+		</ul>
+		r:&nbsp;<input type="text" value="35" id="r"><br>
+		g:<input type="text" value="35" id="g"><br>
+		b:<input type="text" value="35" id="b">
+		<button id="qr">确认</button>
+		<div id="ysk"></div>
+	</div>
+	<div id="box"></div>
+	<script type="text/javascript">
+		function $(id){
+			return document.getElementById(id);
+		}
+		var bd = document.documentElement||document.body;
+		var yssz = ["red","yellow","green","skyblue","blue","gold","pink","black"];
+		var sss = ["r","g","b"];
+		var lis = $("ysz").getElementsByTagName('li');
+		var gbys = null;
+		var x=y=r=g=b=0;
+		box.style.width = bd.clientWidth + "px";
+		box.style.height = bd.clientHeight + "px";
+		for(var i = 0;i < lis.length;i++){
+			lis[i].style.backgroundColor = yssz[i];
+			lis[i].index = i;
+			lis[i].onclick = function(){
+				gbys = this.index;
+			}
+		}
+		bg();
+		$("qr").onclick = function(){
+			gbys = 8;
+		}
+		for(var j = 0;j < 3;j++){
+			$(sss[j]).oninput = function(){
+				bg();
+			}
+		}
+		$("sj").onclick = function(){
+			gbys = null;
+		}
+		box.onmousedown = function(evt){
+			var event = evt||window.event;
+			hq();
+			var ndv = document.createElement("div");
+			box.appendChild(ndv);
+			ndv.className = "bg";
+			if (gbys<8&&gbys!=null) {
+				ndv.style.backgroundColor = yssz[gbys];
+			}else if (gbys==8) {
+				ndv.style.backgroundColor = "rgb("+r+","+g+","+b+")";
+			} else {
+				ndv.style.backgroundColor = "rgb("+ys(0,256)+","+ys(0,256)+","+ys(0,256)+")";
+			}
+			ndv.style.height = x + "px";
+			ndv.style.width = y + "px";
+			ndv.style.left = event.clientX - ndv.offsetWidth/2 + "px";
+			ndv.style.top = event.clientY - ndv.offsetHeight/2 + "px";
+			document.onmousemove = function(evt){
+				var event = evt||window.event;
+				var ndv = document.createElement("div");
+				box.appendChild(ndv);
+				ndv.className = "bg";
+				if (gbys<8&&gbys!=null) {
+					ndv.style.backgroundColor = yssz[gbys];
+				}else if (gbys==8) {
+					ndv.style.backgroundColor = "rgb("+r+","+g+","+b+")";
+				} else {
+					ndv.style.backgroundColor = "rgb("+ys(0,256)+","+ys(0,256)+","+ys(0,256)+")";
+				}
+				ndv.style.height = x + "px";
+				ndv.style.width = y + "px";
+				ndv.style.left = event.clientX - ndv.offsetWidth/2 + "px";
+				ndv.style.top = event.clientY - ndv.offsetHeight/2 + "px";
+			}
+		}
+		document.onmouseup = function(){
+			document.onmousemove = null;
+		}
+		function hq(){
+			x = parseInt($("kuan").value);
+			y = parseInt($("gao").value);
+		}
+		function ys(min,max){
+			return parseInt(Math.random()*(max-min)+min);
+		}
+		function bg(){
+			r = parseInt($("r").value);
+			g = parseInt($("g").value);
+			b = parseInt($("b").value);
+			if (r>255) {
+				r = 255;
+			}
+			if (g>255) {
+				g = 255;
+			}
+			if (b>255) {
+				b = 255;
+			}
+			$("ysk").style.backgroundColor = "rgb("+r+","+g+","+b+")";
+		}
+	</script>
+</body>
+</html>
